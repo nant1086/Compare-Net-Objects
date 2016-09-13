@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace KellermanSoftware.CompareNetObjects.TypeComparers
 {
@@ -92,7 +93,35 @@ namespace KellermanSoftware.CompareNetObjects.TypeComparers
                 return;
             }
 
-            string currentBreadCrumb = AddBreadCrumb(parms.Config, parms.BreadCrumb, info.Name);
+            var name = info.Name;
+            var resource = string.Empty;
+            foreach (DisplayAttribute item in info.GetCustomAttributes(typeof(DisplayAttribute), true))
+            {
+                if (item.ResourceType != null)
+                {
+                    resource = Convert.ToString(item.ResourceType.GetProperty(item.Name, BindingFlags.Static | BindingFlags.Public).GetValue(null, null));
+                }
+                if (string.IsNullOrWhiteSpace(resource))
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        name = item.Description;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Prompt))
+                    {
+                        name = item.Prompt;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Name))
+                    {
+                        name = item.Name;
+                    }
+                }
+                else
+                {
+                    name = resource;
+                }             
+            }
+            string currentBreadCrumb = AddBreadCrumb(parms.Config, parms.BreadCrumb, name);
 
             CompareParms childParms = new CompareParms
             {
