@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using System.ComponentModel.DataAnnotations;
+//using System.ComponentModel.DataAnnotations;
 
 namespace KellermanSoftware.CompareNetObjects.TypeComparers
 {
@@ -93,7 +93,7 @@ namespace KellermanSoftware.CompareNetObjects.TypeComparers
                 return;
             }
 
-            var name = info.Name;
+            /* var name = info.Name;
             var resource = string.Empty;
             foreach (DisplayAttribute item in info.GetCustomAttributes(typeof(DisplayAttribute), true))
             {
@@ -120,8 +120,8 @@ namespace KellermanSoftware.CompareNetObjects.TypeComparers
                 {
                     name = resource;
                 }             
-            }
-            string currentBreadCrumb = AddBreadCrumb(parms.Config, parms.BreadCrumb, name);
+            } */
+            string currentBreadCrumb = AddBreadCrumb(parms.Config, parms.BreadCrumb, info.Name);
 
             CompareParms childParms = new CompareParms
             {
